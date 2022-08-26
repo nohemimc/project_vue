@@ -1,0 +1,11 @@
+Entrar en la consola:
+
+// Obtener un resultado en consola de una variable
+mountedApp.message
+    result: "Hola Vue"
+
+// Pasar en consola un valor a la variable
+mountedApp.message = "Hola desde Escuela Vue 👌"
+
+Escuela Vue: https://escuelavue.es/cursos/curso-vue-3-desde-cero/v-bind-vue-atributos-dinamicos/
+

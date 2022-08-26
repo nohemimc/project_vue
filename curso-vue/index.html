@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>GitHub Users</title>
+    <link rel="stylesheet" href="css/main.css" />
+    <!-- Dependencia de Vue desde el HTML -->
+    <script src="https://unpkg.com/vue@3"></script>
+  </head>
+
+  <body>
+    <div id="app">
+      <!-- Favorites -->
+      <div class="favorites"></div>
+
+      <!-- Content -->
+      <article class="content">
+        <!-- <h1 class="content__title">{{message}}</h1> Ejemplo: Interpolación de texto -->
+        <h1 class="content__title">Search GitHub Users</h1>
+
+        <!-- Search -->
+        <!-- Directiva v-on: Escucha del evento-submit del botón, es un tipo de callback, ya que está atento a la escucha del evento para desencadenar la función "doSearch()" -->
+        <!-- Sintaxis: directiva:Evento.modificador(comportamiento del evento)="función a realizar" -->
+
+        <form class="search" v-on:submit.prevent="doSearch()">
+          <!-- Directiva v-model: Devuelve una cadena de caracteres desde el modelo -->
+          <!-- Sintaxis: directiva="propiedad_del_modelo" -->
+          <input
+            v-model="search"
+            type="text"
+            class="search__input"
+            required
+            placeholder="Search GitHub users"
+          />
+          <input type="submit" class="search__submit" value="Search" />
+        </form>
+
+        <!-- Result -->
+        <div v-if="result" class="result">
+          <h2 class="result__name">{{result.name}}</h2>
+          <img v-bind:src="result.avatar_url" :alt="result.name" class="result__avatar" />
+          <p class="result__bio"> {{result.bio}}
+             <br />
+            <a :href="result.blog" target="_blank" class="result__blog">{{result.blog}}</a>
+          </p>
+        </div>
+
+        <!-- Error -->
+        <div v-if="error" class="result__error">User not found</div>
+      </article>
+    </div>
+    <script src="js/main.js"></script>
+    <script>
+      const mountedApp = app.mount("#app"); //Ejemplo:  Montaje de la aplicación
+    </script>
+  </body>
+</html>
