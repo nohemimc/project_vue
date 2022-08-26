@@ -38,7 +38,9 @@
         </form>
 
         <!-- Result -->
-        <div v-if="result" class="result">
+        <div class="result" v-if="result">
+          <a  href="#" class="result__toggle-favorite" @click="addFavorite">Add Favorite 🤍</a>
+          <!-- <a v-else href="#" class="result__toggle-favorite" @click="removeFavorite">Remove Favorite 🤍</a> -->
           <h2 class="result__name">{{result.name}}</h2>
           <img v-bind:src="result.avatar_url" :alt="result.name" class="result__avatar" />
           <p class="result__bio"> {{result.bio}}
@@ -48,7 +50,7 @@
         </div>
 
         <!-- Error -->
-        <div v-if="error" class="result__error">User not found</div>
+        <div v-if="error" class="result__error">{{error}}</div>
       </article>
     </div>
     <script src="js/main.js"></script>
