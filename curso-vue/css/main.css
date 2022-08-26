@@ -1,6 +1,7 @@
 /* General */
 * {
   box-sizing: border-box;
+  margin: 0; padding: 0;
 }
 
 html,
@@ -114,7 +115,13 @@ body {
 
 .favorite__avatar {
   height: 5rem;
-  margin: 0.3rem;
+  margin: 0.4rem;
+}
+
+.favorite__name{
+  grid-area: name;
+  margin: 1rem 0.5rem 0.5rem 0.4rem;
+  font-size: 0.8rem;
 }
 
 .favorite--selected {

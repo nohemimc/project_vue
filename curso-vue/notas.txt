@@ -22,5 +22,25 @@ Método Map(). Crea un nuevo arreglo
     Método de instancia: has
     Devuelve un valor booleano que afirma si un valor se ha asociado al key-objeto Map o no.
 
+Window.localStorage 
+Permite almacenar en el navegador los datos.
+Sintaxis: 
+    miStorage = window.localStorage;
+
+JSON.stringify()
+El método JSON.stringify() convierte un objeto o valor de JavaScript en una cadena de texto JSON
+Sintaxis:
+    JSON.stringify(value[, replacer[, space]])
+
+JSON.parse()
+El método JSON.parse() analiza una cadena de texto como JSON, transformando opcionalmente el valor producido por el análisis.
+Sintaxis:
+    JSON.parse(text[, reviver])
+
+Encadenamiento opcional ?
+Permite leer el valor de una propiedad ubicada dentro de una cadena de objetos conectados sin tener que validar expresamente que cada referencia en la cadena sea válida
+En lugar de detener la aplicación, solo retorna un null
+
 Escuela Vue: https://escuelavue.es/cursos/curso-vue-3-desde-cero/v-bind-vue-atributos-dinamicos/
 
+Repositorio Final: https://github.com/escuelavue/curso-vue-3-desde-cero/tree/L12_end

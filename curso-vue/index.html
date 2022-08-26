@@ -12,8 +12,18 @@
 
   <body>
     <div id="app">
+
       <!-- Favorites -->
-      <div class="favorites"></div>
+      <div class="favorites">
+        <transition-group name="list">
+          <div class="favorite" v-for="favorite in allFavorites" :key="favorite.id">
+            <h2 class="favorite__name">{{favorite.name}}</h2>
+            <a @click.prevent="showFavorite(favorite)" href="#" target="_blank">
+              <img :src="favorite.avatar_url" :alt="favorite.name" class="favorite__avatar">
+            </a>
+          </div>
+        </transition-group>
+      </div>
 
       <!-- Content -->
       <article class="content">
@@ -38,24 +48,30 @@
         </form>
 
         <!-- Result -->
-        <div class="result" v-if="result">
-          <a  href="#" class="result__toggle-favorite" @click="addFavorite">Add Favorite 🤍</a>
-          <!-- <a v-else href="#" class="result__toggle-favorite" @click="removeFavorite">Remove Favorite 🤍</a> -->
-          <h2 class="result__name">{{result.name}}</h2>
-          <img v-bind:src="result.avatar_url" :alt="result.name" class="result__avatar" />
-          <p class="result__bio"> {{result.bio}}
-             <br />
-            <a :href="result.blog" target="_blank" class="result__blog">{{result.blog}}</a>
-          </p>
-        </div>
+        <Transition>
+          <div class="result" v-if="result">
+            <a v-if="!isFavorite" href="#" class="result__toggle-favorite" @click="addFavorite">Add Favorite</a>
+            <a v-else href="#" class="result__toggle-favorite" @click="removeFavorite">Remove Favorite</a>
+            <h2 class="result__name">{{result.name}}</h2>
+            <img v-bind:src="result.avatar_url" :alt="result.name" class="result__avatar" />
+            <p class="result__bio"> {{result.bio}}
+              <br/>
+              <a :href="result.blog" target="_blank" class="result__blog">{{result.blog}}</a>
+            </p>
+          </div>
+        </Transition>
 
         <!-- Error -->
         <div v-if="error" class="result__error">{{error}}</div>
+
       </article>
+
     </div>
+
     <script src="js/main.js"></script>
+
     <script>
-      const mountedApp = app.mount("#app"); //Ejemplo:  Montaje de la aplicación
+      const mountedApp = app.mount("#app"); //Montaje de la aplicación
     </script>
   </body>
 </html>
