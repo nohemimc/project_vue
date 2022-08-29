@@ -9,7 +9,7 @@ app.component('app-profile', {
         }
     },
     template: 
-    /* html */ `
+    /*html*/ `
     <div class="result">
         <a v-if="isFavorite" href="#" class="result__toggle-favorite" @click="removeFavorite">Remove Favorite ❌</a>
         <a v-else href="#" class="result__toggle-favorite" @click="addFavorite">Add Favorite ⭐️</a>
