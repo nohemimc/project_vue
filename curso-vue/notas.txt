@@ -1,11 +1,54 @@
 Entrar en la consola:
 
-// Obtener un resultado en consola de una variable
-mountedApp.message
+===============================================================================================
+Elementos del template  DOM con referencias de Vue:
+
+Directiva v-on:
+    <!-- Directiva v-on: Escucha del evento-submit del botón, es un tipo de callback, ya que está atento a la escucha del evento para desencadenar la función "doSearch()" -->
+    <!-- Sintaxis: directiva:Evento.modificador(comportamiento del evento)="función a realizar" -->
+    Versión acortada:
+     <a @click.prevent="showFavorite(favorite)" href="#" target="_blank">
+
+Interpolación de texto: 
+    <!-- <h1 class="content__title">{{message}}</h1> -->   
+
+Directiva v-model:
+    <!-- Directiva v-model: Devuelve una cadena de caracteres desde el modelo -->
+    <!-- Sintaxis: directiva="propiedad_del_modelo" -->     
+
+Directiva v-for:
+    Se utiliza para iterar a través de las propiedades de un objeto.
+    Sintaxis: v-for: "item in items"
+    Dónde:
+        items: Es una colección de elementos, principalmente se encuentra dentro del modelo: data() o en una propiedad computada: computed: {}
+        item: Es cada elemento de la colección de elementos (items)
+
+Directiva v-bind: 
+    Se utiliza en atributos HTML. 
+    Sintaxis: v-bind:src="..." ó :src="..."
+        <img :src="favorite.avatar_url" :alt="favorite.name"  class="favorite__avatar" />
+
+Componentes
+Transition: 
+    Aplica animaciones a componentes que entran y salen del DOM, es decir, que usan directivas como: v-if o v-show.
+
+Transition-group: 
+    Aplica animaciones cuando un elemento o componente se inserta, elimina o mueve dentro de una v-forlista
+===============================================================================================
+
+
+Funciones de la apliación en JavaScript:
+
+//Montaje de la aplicación:
+    const mountedApp = app.mount("#app");
+
+
+//Obtener un resultado en consola de una variable
+    mountedApp.message
     result: "Hola Vue"
 
-// Pasar en consola un valor a la variable
-mountedApp.message = "Hola desde Escuela Vue 👌"
+//Pasar en consola un valor a la variable
+    mountedApp.message = "Hola desde Escuela Vue 👌"
 
 //Función para añadir a favoritos a varios usuarios de github
     addFavorite() {
@@ -18,29 +61,55 @@ mountedApp.message = "Hola desde Escuela Vue 👌"
         value: valores
     }
 
+//Renderizado condicional: addFavorite vs removeFavorite
+Las directivas v-if y v-else, permiten renderizar el contenido dependiendo del cumplimiento de la condición, si se añada como favorito el usuario, entonces se renderiza el contenido que atiende la función "addFavorite", en caso contrario, si se desea eliminar un usuario como favorito, se renderiza el contenido cumpliendo la función "removeFavorite".
+
+
+//Propiedades computadas
+Dentro de computed: {}, se añade la lógica de la aplicación, asi es más fácil de mantener el código, devuelve true o false.
+
+
+// Método Map()
 Método Map(). Crea un nuevo arreglo
     Método de instancia: has
-    Devuelve un valor booleano que afirma si un valor se ha asociado al key-objeto Map o no.
+    map.has(): Devuelve un valor booleano que afirma si un valor se ha asociado al key-objeto Map o no. Devuelve true o false. 
 
+//Método Array.from()
+Crea un nuevo Array con base en un objeto iterable: 
+     object: {}
+
+//Funcionamiento de localStorage:
 Window.localStorage 
 Permite almacenar en el navegador los datos.
 Sintaxis: 
     miStorage = window.localStorage;
 
+//Ciclos de vida de Vue
+created(): Se ejecuta más rapido que mounted (hablando como medida de tiempo en milisegundos), no se tiene acceso al DOM.
+mounted(): Accede a los elementos del DOM para manipularlos, leerlos, transformalos, etc. ya que se tiene accceso a la plantilla. 
+
+//Funcionamiento de JSON.stringify():
 JSON.stringify()
 El método JSON.stringify() convierte un objeto o valor de JavaScript en una cadena de texto JSON
 Sintaxis:
     JSON.stringify(value[, replacer[, space]])
 
+//Funcionamiento de JSON.parse()
 JSON.parse()
-El método JSON.parse() analiza una cadena de texto como JSON, transformando opcionalmente el valor producido por el análisis.
+El método JSON.parse() analiza una cadena de texto como JSON, transformando opcionalmente el valor producido por el análisis. Es lo contrario a realizar: JSON.stringify()
 Sintaxis:
     JSON.parse(text[, reviver])
 
+//Funcionamiento de ?
 Encadenamiento opcional ?
 Permite leer el valor de una propiedad ubicada dentro de una cadena de objetos conectados sin tener que validar expresamente que cada referencia en la cadena sea válida
 En lugar de detener la aplicación, solo retorna un null
 
-Escuela Vue: https://escuelavue.es/cursos/curso-vue-3-desde-cero/v-bind-vue-atributos-dinamicos/
+//Funcionamiento de Data.now()
+El método now devuelve los milisegundos transcurridos desde las 00:00:00 UTC del 1 de enero de 1970 justo hasta ahora como un Number.
+Ejemplo: var registro = Date.now();
 
-Repositorio Final: https://github.com/escuelavue/curso-vue-3-desde-cero/tree/L12_end
+
+Escuela Vue: https://escuelavue.es/cursos/curso-vue-3-desde-cero
+
+Repositorio Final: https://github.com/escuelavue/curso-vue-3-desde-cero/tree/L17_end
