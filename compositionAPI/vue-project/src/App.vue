@@ -25,7 +25,7 @@
     <h1 class="content__title">Search GitHub Users</h1>
 
     <!-- Search -->
-    <form class="search" v-on:submit.prevent="doSearch()">
+    <div class="search">
       <input
         v-model="search"
         type="text"
@@ -33,8 +33,8 @@
         required
         placeholder="Search GitHub users"
       />
-      <input type="submit" class="search__submit" value="Search" />
-    </form>
+      <button class="search__submit"  @click="doSearch" >Search</button>
+    </div>
 
     <!-- Result -->
     <Transition>
@@ -51,13 +51,13 @@
         >
         <h2 class="result__name">{{ result.name }}</h2>
         <img
-          v-bind:src="result.avatar_url"
+          :src="result.avatar_url"
           :alt="result.name"
           class="result__avatar"
         />
         <p class="result__bio">
           {{ result.bio }} <br />
-          <a v-bind:href="result.blog" target="_blank" class="result__blog">{{
+          <a :href="result.blog" target="_blank" class="result__blog">{{
             result.blog
           }}</a>
         </p>
@@ -80,6 +80,7 @@ export default {
     const favorites = ref(new Map());
 
     const requestMaxTimeMs = 3000;
+    const API = "https://api.github.com/users/";
 
     const savedFavorites = JSON.parse(window.localStorage.getItem("favorites"));
     if (savedFavorites?.length) {
@@ -94,6 +95,7 @@ export default {
 
     async function doSearch() {
       const foundInFavorites = favorites.value.get(search.value);
+      console.log(foundInFavorites);
       const shouldRequestAgain = (() => {
         if (!!foundInFavorites) {
           const { lastRequest } = foundInFavorites;
@@ -103,7 +105,8 @@ export default {
           );
         }
         return false;
-      })(); // IIFE
+      })();
+      console.log(shouldRequestAgain); // IIFE
       if (!!foundInFavorites && !shouldRequestAgain) {
         console.log("Found and we use the cached version");
         return (result.value = foundInFavorites);
@@ -120,8 +123,8 @@ export default {
         if (!response.ok) throw new Error("User not found");
         const data = await response.json();
         result.value = data;
-      } catch (error) {
-        error.value = error;
+      } catch (errores) {
+        error.value = errores;
       } finally {
         search.value = null;
       }
@@ -163,13 +166,10 @@ export default {
       allFavorites,
 
       doSearch,
-      doRequest,
-
       addFavorite,
       removeFavorite,
       showFavorite,
       checkFavorite,
-      updateStorage,
     };
   },
 };
