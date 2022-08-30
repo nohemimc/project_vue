@@ -1,6 +1,5 @@
-
 //API REST de github
-const API = 'https://api.github.com/users/';
+const API = "https://api.github.com/users/";
 
 const requestMaxTimeMs = 3000; //Definición de tiempo máximo para volver a realizar una petición, para la actualización de los usuarios favoritos que están en el localStorage
 
@@ -17,7 +16,7 @@ const app = Vue.createApp({
   // Ciclo de vida: created()
   created() {
     // savedFavorites: Recupera los usuarios favoritos que previamente ya fueron añadidos como favoritos. Primero transforma la cadena de texto en un objeto, después recorre ese array con savedFavorites.length y una vez que esta iterando dicho array evalúa si el usuario existe como favortio, si es existe obtiene de manera individual a cada usuario y obteniendo su nombre de usuario y su información.
-    const savedFavorites = JSON.parse(window.localStorage.getItem('favorites'));
+    const savedFavorites = JSON.parse(window.localStorage.getItem("favorites"));
     if (savedFavorites?.length) {
       const favorites = new Map(
         savedFavorites.map((favorite) => [favorite.login, favorite])
@@ -53,20 +52,20 @@ const app = Vue.createApp({
       })(); // IIFE
 
       if (!!foundInFavorites && !shouldRequestAgain) {
-        console.log('Found and we use the cached version');
+        console.log("Found and we use the cached version");
         return (this.result = foundInFavorites);
       }
 
-      await this.doRequest()
+      await this.doRequest();
       if (foundInFavorites) foundInFavorites.lastRequest = new Date();
     },
 
     async doRequest() {
       try {
-        console.log('Not found or cached version is too old');
+        console.log("Not found or cached version is too old");
         this.result = this.error = null;
         const response = await fetch(API + this.search);
-        if (!response.ok) throw new Error('User not found');
+        if (!response.ok) throw new Error("User not found");
         const data = await response.json();
         this.result = data;
       } catch (error) {
@@ -96,13 +95,13 @@ const app = Vue.createApp({
 
     // Función  para dar un efecto a los usuarios favoritos
     checkFavorite(id) {
-      return this.result?.login === id
+      return this.result?.login === id;
     },
 
     // Función para almacenar los datos de navegación: Se obtienen los usuarios de 'favorites', se guardan en memoria con localStorage y se convierten en Strings con JSON.stringify
     updateStorage() {
       window.localStorage.setItem(
-        'favorites',
+        "favorites",
         JSON.stringify(this.allFavorites)
       );
     },

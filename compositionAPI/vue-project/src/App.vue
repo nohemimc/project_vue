@@ -37,14 +37,32 @@
     </form>
 
     <!-- Result -->
-    <!-- <Transition>
-          <app-profile 
-                    v-if="result" 
-                    :result="result"
-                    :is-favorite="isFavorite" 
-                    @add-favorite="addFavorite"
-                    @remove-favorite="removeFavorite" />
-        </Transition> -->
+    <Transition>
+      <div class="result" v-if="result">
+        <a
+          v-if="isFavorite"
+          href="#"
+          class="result__toggle-favorite"
+          @click="removeFavorite"
+          >Remove Favorite</a
+        >
+        <a v-else href="#" class="result__toggle-favorite" @click="addFavorite"
+          >Add Favorite</a
+        >
+        <h2 class="result__name">{{ result.name }}</h2>
+        <img
+          v-bind:src="result.avatar_url"
+          :alt="result.name"
+          class="result__avatar"
+        />
+        <p class="result__bio">
+          {{ result.bio }} <br />
+          <a v-bind:href="result.blog" target="_blank" class="result__blog">{{
+            result.blog
+          }}</a>
+        </p>
+      </div>
+    </Transition>
 
     <!-- Error -->
     <div v-if="error" class="result__error">{{ error }}</div>
@@ -52,7 +70,7 @@
 </template>
 
 <script>
-import { ref } from "vue";
+import { ref, computed } from "vue";
 export default {
   name: "App",
   setup() {
@@ -61,11 +79,97 @@ export default {
     const error = ref(null);
     const favorites = ref(new Map());
 
+    const requestMaxTimeMs = 3000;
+
+    const savedFavorites = JSON.parse(window.localStorage.getItem("favorites"));
+    if (savedFavorites?.length) {
+      const favorites = new Map(
+        savedFavorites.map((favorite) => [favorite.login, favorite])
+      );
+      favorites.value = favorites;
+    }
+
+    const isFavorite = computed(() => favorites.value.has(result.value.login));
+    const allFavorites = computed(() => Array.from(favorites.value.values()));
+
+    async function doSearch() {
+      const foundInFavorites = favorites.value.get(search.value);
+      const shouldRequestAgain = (() => {
+        if (!!foundInFavorites) {
+          const { lastRequest } = foundInFavorites;
+          return (
+            new Date().getTime() - new Date(lastRequest).getTime() >
+            requestMaxTimeMs
+          );
+        }
+        return false;
+      })(); // IIFE
+      if (!!foundInFavorites && !shouldRequestAgain) {
+        console.log("Found and we use the cached version");
+        return (result.value = foundInFavorites);
+      }
+      await doRequest();
+      if (foundInFavorites) foundInFavorites.lastRequest = new Date();
+    }
+
+    async function doRequest() {
+      try {
+        console.log("Not found or cached version is too old");
+        result.value = error.value = null;
+        const response = await fetch(API + search.value);
+        if (!response.ok) throw new Error("User not found");
+        const data = await response.json();
+        result.value = data;
+      } catch (error) {
+        error.value = error;
+      } finally {
+        search.value = null;
+      }
+    }
+
+    function addFavorite() {
+      result.value.lastRequest = new Date();
+      favorites.value.set(result.value.login, result.value);
+      updateStorage();
+    }
+
+    function removeFavorite() {
+      favorites.value.delete(result.value.login);
+      updateStorage();
+    }
+
+    function showFavorite(favorite) {
+      result.value = favorite;
+    }
+
+    function checkFavorite(id) {
+      return result?.value.login === id;
+    }
+
+    function updateStorage() {
+      window.localStorage.setItem(
+        "favorites",
+        JSON.stringify(allFavorites.value)
+      );
+    }
+
     return {
       search,
       result,
       error,
       favorites,
+
+      isFavorite,
+      allFavorites,
+
+      doSearch,
+      doRequest,
+
+      addFavorite,
+      removeFavorite,
+      showFavorite,
+      checkFavorite,
+      updateStorage,
     };
   },
 };

@@ -51,12 +51,13 @@
 
         <!-- Result -->
         <Transition>
-          <app-profile 
-                    v-if="result" 
-                    :result="result"
-                    :is-favorite="isFavorite" 
-                    @add-favorite="addFavorite"
-                    @remove-favorite="removeFavorite" />
+          <app-profile
+            v-if="result"
+            :result="result"
+            :is-favorite="isFavorite"
+            @add-favorite="addFavorite"
+            @remove-favorite="removeFavorite"
+          />
         </Transition>
 
         <!-- Error -->
