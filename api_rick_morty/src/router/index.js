@@ -3,8 +3,8 @@ import CardList from "@/views/CardList.vue";
 import EventLayout from "@/views/event/EventLayout.vue";
 import EventDetails from "@/views/event/EventDetails.vue";
 import EventLocation from "@/views/event/EventLocation.vue";
-import NotFound from "@/views/event/NotFound.vue";
-import NProgress from "nprogress.vue";
+import NotFound from "@/views/NotFound.vue";
+import NProgress from "nprogress";
 
 const routes = [
   {
@@ -39,7 +39,7 @@ const routes = [
     component: () => import(/* webpackChunkName: "about" */ '../views/AboutView.vue')
   },
   {
-    path: "/:catchAll(*)",
+    path: "/:catchAll(.*)",
     name: "NotFound",
     component: NotFound
   },
@@ -52,10 +52,23 @@ const routes = [
 ]
 
 const router = createRouter({
-  history: createWebHashHistory(process.env.BASE_URL),
+  //Historial hash, útil para apps sin servidor
+  history: createWebHashHistory(process.env.BASE_URL), //Variables de entorno a un archivo .env.
   routes
 });
 
+/* 
+  router.beforeEach: Protector de navegación global (Global Before Guards)
+
+    beforeEach:
+    Agrega un protector de navegación que se ejecuta antes de cualquier navegación. 
+    Devuelve una función que elimina la guardia registrada.
+
+    Parametros que recibe la función:
+      1. to - ubicación de la ruta de destino en un formato normalizado a la que se navega
+      2. from - ubicación de la ruta actual en un formato normalizado desde el que se está navegando
+      3. next - fuente de errores, puede aparecer más de una vez, pero solo si las rutas lógicas no se superponen, de lo contrario, el gancho nunca se resolverá ni producirá errores.
+*/
 router.beforeEach((to, from, next) => {
   NProgress.start();
   next();
